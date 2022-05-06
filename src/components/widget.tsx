@@ -1,6 +1,7 @@
 import { ChatTeardropText } from 'phosphor-react'
 import { useState } from 'react';
 import { Popover } from '@headlessui/react'
+import { WidgetForm } from './widgetForm'
 
 
 export function Widget(){
@@ -8,10 +9,11 @@ export function Widget(){
 
     return(
         <>
-            <Popover className="absolute right-4 bottom-4">
+        {/* wapprer do widget botão e painel juntos no mesmo popover */}
+            <Popover className="absolute right-4 bottom-4 flex flex-col items-end">
                 
                 <Popover.Panel>
-                    <h1>allan</h1>
+                    <WidgetForm />
                 </Popover.Panel>
 
                 <Popover.Button  className="bg-fuchsia-900 text-white p-3 rounded-full flex items-center group">
