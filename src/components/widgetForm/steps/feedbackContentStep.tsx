@@ -2,7 +2,10 @@ import { CloseButton } from '../../closebutton'
 import { FeedbackType, FeedbackTypes } from '..'
 import { ArrowLeft } from 'phosphor-react'
 import { ScreenShot } from '../screenShot'
-import { FormEvent, useState } from 'react'
+import React, { FormEvent, useState } from 'react'
+import axios  from 'axios'
+import { Load } from '../../load'
+
 
 
 interface FeedbackContentProps {
@@ -15,13 +18,23 @@ export function FeedbackTypeContent({FeedbackType,returnFeedbackTypeStep,onFeedb
     const feedbackTypeInfo = FeedbackTypes[FeedbackType]
     const [screenShotTook,useScreenShotTook] = useState<string | null>(null)
     const [MensageFeedback,setMensageFeedback] = useState<string>('')
+    const [loadSendFeedBack,useLoadSendFeedBack] = useState(false)
 
-    function submitForm(e:FormEvent){
+    async function submitForm(e:FormEvent){
         e.preventDefault();
-        console.log('MensageFeedback',MensageFeedback)
-        console.log('screenShotTook',screenShotTook)
+    
+        useLoadSendFeedBack(true)
+        
+        
+        await axios.post('http://localhost:3333/feedbacks',{
+            type: FeedbackType,
+            comment: MensageFeedback,
+            screenshot: screenShotTook
+        })
 
         onFeedbackSend(true)
+
+        useLoadSendFeedBack(false)
     }
 
     return(
@@ -52,11 +65,11 @@ export function FeedbackTypeContent({FeedbackType,returnFeedbackTypeStep,onFeedb
                     <ScreenShot hasScreenShot={screenShotTook} takeScreenShot={useScreenShotTook}/>
 
                     <button 
-                        className="bg-fuchsia-900 w-full p-2 disabled:opacity-50" 
+                        className="bg-fuchsia-900 w-full flex justify-center items-center p-2 disabled:opacity-50" 
                         type="submit"
-                        disabled={MensageFeedback.length == 0}
+                        disabled={MensageFeedback.length == 0 || loadSendFeedBack}
                     >
-                        Enviar Feedback
+                        { loadSendFeedBack ? <Load/> : 'Enviar Feedback' }
                     </button>
                 </footer>
             </form>
