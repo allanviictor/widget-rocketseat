@@ -7,10 +7,11 @@ import { FormEvent, useState } from 'react'
 
 interface FeedbackContentProps {
     FeedbackType: FeedbackType
-    returnFeedbackTypeStep:((value:null) => void)
+    returnFeedbackTypeStep: ((value:null) => void)
+    onFeedbackSend: (value:boolean) => void;
 }
 
-export function FeedbackTypeContent({FeedbackType,returnFeedbackTypeStep}:FeedbackContentProps){
+export function FeedbackTypeContent({FeedbackType,returnFeedbackTypeStep,onFeedbackSend}:FeedbackContentProps){
     const feedbackTypeInfo = FeedbackTypes[FeedbackType]
     const [screenShotTook,useScreenShotTook] = useState<string | null>(null)
     const [MensageFeedback,setMensageFeedback] = useState<string>('')
@@ -19,6 +20,8 @@ export function FeedbackTypeContent({FeedbackType,returnFeedbackTypeStep}:Feedba
         e.preventDefault();
         console.log('MensageFeedback',MensageFeedback)
         console.log('screenShotTook',screenShotTook)
+
+        onFeedbackSend(true)
     }
 
     return(
